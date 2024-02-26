@@ -45,18 +45,18 @@ function MergeMP3
         }
 
         #Combines all mp3paths/files with a deliminater of +, ex. *\1.mp3 + *\2.mp3
-        $formattedMP3Names =  $mp3names -join "`" + `""
+        $formattedMP3Names = '"' + ($mp3names -join '" + "') + '"'
 
         #Sets the location of were the combined MP3 file saves to
-        $formattedtolocation = "`" `"$tolocation\$OutputFileName.mp3`""
+        $formattedtolocation = '"'+"$tolocation\$OutputFileName.mp3"+'"'
 
         #Merges the two variables from above to prep for the cmd copy command syntax of: copy <source> <destination>
-        $final = $formattedMP3Names + $formattedtolocation
+        $final = $formattedMP3Names + " " + $formattedtolocation
     }
     Process
     {
         #Runs the CMD copy command with the merged formatted body from above
-        cmd /c copy /b $final
+        Invoke-Expression "cmd /c copy /b $final"
         Write-Output "MP3's merged to $tolocation\$OutputFileName.mp3"
     }
     End
